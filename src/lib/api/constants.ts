@@ -1,0 +1,32 @@
+import {Genre} from "./types";
+
+export const genres: Genre[] = [
+  "",
+  "Action",
+  "Adventure",
+  "Animation",
+  "Comedy",
+  "Crime",
+  "Drama",
+  "Fantasy",
+  "Horror",
+  "Mystery",
+  "Romance",
+  "Sci-Fi",
+  "Thriller",
+  "Biography",
+  "Documentary",
+  "Family",
+  "Film-Noir",
+  "History",
+  "Music",
+  "Musical",
+  "News",
+  "Reality-TV",
+  "Short",
+  "Sport",
+  "Talk-Show",
+  "War",
+  "Western",
+  "Game-Show"
+];

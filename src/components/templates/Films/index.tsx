@@ -1,15 +1,25 @@
-import { useFilmList } from "@/lib/hooks/useFilmList";
-import { useState } from "react";
+import {useFilmList} from "@/lib/hooks/useFilmList";
+import {useEffect, useState} from "react";
 import Pagination from "../../common/Pagination/Pagination";
 import Film from "./Film/Film";
 import * as Style from "./index.styled";
+import HeroSlide from "@/components/common/HeroSlide/HeroSlide";
+import {MovieList} from "@/lib/api/types";
 
-const Films = () => {
+const Films = ({movieList}: { movieList?: MovieList }) => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
-  const { filmList, isLoading } = useFilmList(String(page), String(pageSize));
+  const {filmList, isLoading, updateFilmList} = useFilmList({
+    currentPage: String(page),
+    pageSize: String(pageSize),
+    defaultValue: movieList
+  });
 
-  const filmsList = filmList?.data.movies.map((film) => {
+  useEffect(() => {
+    updateFilmList();
+  }, [page, pageSize])
+
+  const filmsList = filmList?.data?.movies.map((film) => {
     return <Film key={film.id} {...film}></Film>;
   });
 
@@ -19,10 +29,12 @@ const Films = () => {
   return filmList ? (
     <Style.Films>
       <Style.Content>
-        <Style.Title>Films</Style.Title>
+        <Style.Title onClick={updateFilmList}>Films</Style.Title>
+        <HeroSlide/>
+
         <Style.List>{filmsList}</Style.List>
         <Pagination
-          totalUsersCount={filmList?.data?.movie_count}
+          totalUsersCount={filmList?.data?.movie_count ?? 1}
           currentPage={page}
           pageSize={pageSize}
           onPageChange={(page) => setPage(page)}

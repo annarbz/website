@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 export const darkTheme = {
-  backgroundColor: "#1F2023",
+  backgroundColor: "#111",
   textColor: "#F5F5F5",
   infoIconColor: "#2D2F34",
   iconColor: "#27292D",

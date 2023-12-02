@@ -1,10 +1,10 @@
-import { MovieList } from "@/lib/api";
 import Link from "next/link";
 import React from "react";
 import { VscStarFull } from "react-icons/vsc";
 import * as Style from "./index.styled";
+import {Movie} from "@/lib/api/types";
 
-const Film: React.FC<MovieList> = (props) => {
+const Film: React.FC<Movie> = (props) => {
   return (
     <Style.Film>
       <Link href={`/films/${props.id}`}>

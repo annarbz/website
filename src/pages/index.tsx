@@ -1,12 +1,18 @@
-import { MainLayout } from "@/components/layouts/Main";
-import Films from "@/components/templates/Films/index";
+import {MainLayout} from "@/components/layouts/Main";
+import {GetServerSideProps, NextPage} from "next";
+import {gssp} from "@/services/indexPage/gssp";
+import {TIndexPageProps} from "@/services/indexPage/types";
+import {Home} from "@/components/templates/Home/Home";
 
-const App = () => {
+const Page: NextPage<TIndexPageProps> = (props) => {
+  const {homeFilmsContent} = props;
   return (
     <MainLayout>
-      <Films />
+      <Home homeFilmsContent={homeFilmsContent}/>
     </MainLayout>
   );
 };
 
-export default App;
+export const getServerSideProps: GetServerSideProps = gssp;
+
+export default Page;
