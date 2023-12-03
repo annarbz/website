@@ -3,6 +3,7 @@ import {useEffect, useMemo, useState} from "react";
 import {FaCalendarAlt, FaFilter, FaFolderOpen, FaGlobeAmericas} from "react-icons/fa";
 import Dropdown, {DropItem, DropItemSimple} from "@/components/common/Dropdown/Dropdown";
 import {genres} from "@/lib/api/constants";
+import {Genre} from "@/lib/api/types";
 
 type Props = {
   searchParams: FilterData;
@@ -60,10 +61,10 @@ export const FilterBar = ({onFilter, searchParams}: Props) => {
     return (checked: boolean, value: string) => {
       let data = {...filterData}
       if (checked) {
-        data[type].push(value)
+        data[type].push(value as Genre)
         setFilterData({...filterData})
       } else {
-        data[type].splice(data[type].indexOf(value), 1)
+        data[type].splice(data[type].indexOf(value as Genre), 1)
         setFilterData({...filterData})
       }
     }
@@ -73,7 +74,7 @@ export const FilterBar = ({onFilter, searchParams}: Props) => {
   //* render list item
   const renderGenre = () => {
     return genres.map(genre => {
-      return <DropItem name={genre} value={genre} check={filterData.genres.includes(genre + "")}
+      return <DropItem name={genre} value={genre} check={filterData.genres.includes(genre as Genre)}
                        onChangeEvent={createHandleSelect("genres")} id={`check-${genre}`}
                        key={genre}/>
     })
