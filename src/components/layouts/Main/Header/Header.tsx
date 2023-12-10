@@ -1,13 +1,9 @@
-import Button from "@/components/common/Button/Button";
 import React, {useEffect, useRef, useState} from "react";
-import { VscSymbolColor } from "react-icons/vsc";
-import * as Style from "./index.styled";
 import cn from "classnames";
 import Wrapper from "@/components/layouts/Wrapper/Wrapper";
 import {HiBars3BottomLeft} from "react-icons/hi2";
 import Link from "next/link";
 import {IoMdClose} from "react-icons/io";
-import {router} from "next/client";
 import {AiOutlineSearch} from "react-icons/ai";
 
 type HeaderProps = {
@@ -29,8 +25,6 @@ const Header: React.FC<HeaderProps> = (props) => {
       document.removeEventListener("click", handleClickOutside)
     }
   }, [])
-
-  const homeIsActive = true;
   const listIsActive = false;
   return (
     <header className={cn('header py-3 absolute top-0 left-0 w-full z-10 md:z-[6]')}>
@@ -48,21 +42,6 @@ const Header: React.FC<HeaderProps> = (props) => {
 
       </Wrapper>
     </header>
-    // <Style.Header id="header">
-    //   <Style.Content>
-    //     <Style.Logo>
-    //       <Style.Img src="https://yts.mx/assets/images/website/logo-YTS.svg"></Style.Img>
-    //       <Style.Name>HD movies at the smallest file size.</Style.Name>
-    //     </Style.Logo>
-    //
-    //     <Style.Buttons>
-    //       <Button
-    //         name={<VscSymbolColor />}
-    //         action={() => props.switchTheme()}
-    //       />
-    //     </Style.Buttons>
-    //   </Style.Content>
-    // </Style.Header>
   );
 };
 export default Header;

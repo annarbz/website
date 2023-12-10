@@ -17,8 +17,8 @@ export const Home = (props: Props) => {
       <section className="about py-3">
         <Wrapper>
           <h1 className='text-light-gray text-xl'>Watch Movies Online Free</h1>
-          <p className='text-light-gray text-xs sm:text-sm mt-2'><span className='text-white text-sm'>Movie<span
-            className='text-dark-teal'>Flix</span></span> - Just a better place to watch movies online for free. It
+          <p className='text-light-gray text-xs sm:text-sm mt-2'><span className='text-white text-sm'>Movie
+            <span className='text-dark-teal'>Flix</span></span> - Just a better place to watch movies online for free. It
             allows you to watch movies online in high quality for free. No registration is required. The content is
             updated daily with fast streaming servers, multi-language subtitles supported. Just open fmovies.to and
             watch your favorite movies, tv-shows. We have almost any movie, tv-shows you want to watch!</p>

@@ -46,7 +46,6 @@ export const FilterBar = ({onFilter, searchParams}: Props) => {
     data.languages = searchParams.languages;
     data.year = searchParams.year || "";
     setFilterData(data)
-
   }, [searchParams])
 
   //* handle select year
@@ -56,26 +55,44 @@ export const FilterBar = ({onFilter, searchParams}: Props) => {
     setFilterData({...data})
   }
 
-  //* handle select languages and genres
-  const createHandleSelect = (type: "languages" | "genres") => {
-    return (checked: boolean, value: string) => {
-      let data = {...filterData}
-      if (checked) {
-        data[type].push(value as Genre)
-        setFilterData({...filterData})
-      } else {
-        data[type].splice(data[type].indexOf(value as Genre), 1)
-        setFilterData({...filterData})
-      }
+  const handleSelectLanguage = (checked: boolean, value: string) => {
+    console.log(value);
+    let data = filterData
+    if (data.languages[0] === value) {
+      data.languages = [];
+    } else {
+      if (checked) data.languages = [value];
     }
+    setFilterData({...data})
   }
+
+
+  const handleSelectGenres = (checked: boolean, value: string) => {
+    let data = filterData
+    if (checked) data.genres = [value as Genre];
+    setFilterData({...data})
+  }
+
+  //* handle select languages and genres
+  // const createHandleSelect = (type: "languages" | "genres") => {
+  //   return (checked: boolean, value: string) => {
+  //     let data = {...filterData}
+  //     if (checked) {
+  //       data[type].push(value as Genre)
+  //       setFilterData({...filterData})
+  //     } else {
+  //       data[type].splice(data[type].indexOf(value as Genre), 1)
+  //       setFilterData({...filterData})
+  //     }
+  //   }
+  // }
 
 
   //* render list item
   const renderGenre = () => {
     return genres.map(genre => {
       return <DropItem name={genre} value={genre} check={filterData.genres.includes(genre as Genre)}
-                       onChangeEvent={createHandleSelect("genres")} id={`check-${genre}`}
+                       onChangeEvent={handleSelectGenres} id={`check-${genre}`}
                        key={genre}/>
     })
   }
@@ -84,7 +101,7 @@ export const FilterBar = ({onFilter, searchParams}: Props) => {
     return ['russian', 'english'].map(data => {
       return <DropItem name={data} value={data}
                        check={filterData.languages.includes(data)} id={`check-${data}`}
-                       key={data} onChangeEvent={createHandleSelect("languages")}/>
+                       key={data} onChangeEvent={handleSelectLanguage}/>
     })
   }
 

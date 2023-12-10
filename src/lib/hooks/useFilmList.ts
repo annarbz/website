@@ -9,16 +9,17 @@ export const useFilmList = ({
                               pageSize,
                               defaultValue,
                               genre,
-                              language, search, year
+                              language, search, year,
+                              pageRequest
                             }: {
   currentPage: string,
   pageSize: string,
   defaultValue?: MovieList,
-  genre?: Genre | Genre[],
+  genre?: Genre,
   language?: string,
   search?: string
   year?: string
-
+  pageRequest?:string;
 }) => {
   const queryClient = useQueryClient();
   const {
@@ -27,7 +28,7 @@ export const useFilmList = ({
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["getFilmList", currentPage, pageSize, genre, language, search, year],
+    queryKey: ["getFilmList", currentPage, pageSize, genre, language, search, year, pageRequest],
     queryFn: () => filmListQuery(currentPage, pageSize, genre, search, language, year),
     keepPreviousData: true,
     cacheTime: 1000 * 60 * 60,

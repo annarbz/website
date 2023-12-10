@@ -1,5 +1,5 @@
-import {Genre, MovieList, SliderFilmContent} from "@/lib/api/types";
+import {SliderFilmContent} from "@/lib/api/types";
 
 export type TIndexPageProps = {
-    homeFilmsContent: SliderFilmContent[]
+  homeFilmsContent: SliderFilmContent[]
 };

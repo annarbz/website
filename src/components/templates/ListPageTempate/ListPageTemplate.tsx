@@ -34,19 +34,24 @@ export const ListPageTemplate = ({initialData, genre, languages, year, size = 30
     currentPage: String(page),
     pageSize: String(pageSize),
     defaultValue: initialData,
-    genre: searchParams.genres,
+    genre: searchParams.genres[0],
     language: searchParams.languages[0],
     year: searchParams.year,
     search: searchRef?.current?.value ?? '',
   });
-  useEffect(() => {
+  useEffect(() => { // Этот эффект вызывается при изменение параметров, page, pageSize, searchParams
     updateFilmList();
 
     const movieCount = filmList?.data.movie_count ?? pageSize;
-    setTotalPages(Number((movieCount / pageSize).toFixed(0)));
+    const totalPages = Number((movieCount / pageSize).toFixed(0));
+    setTotalPages(totalPages);
     setShowingPagesPagination(getPageNumbers())
     updateQueryParams();
   }, [page, pageSize, searchParams])
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchParams]);
 
 
   const updateQueryParams = () => {
@@ -72,7 +77,6 @@ export const ListPageTemplate = ({initialData, genre, languages, year, size = 30
         window.history.replaceState({}, "", url);
         // ** It seems that current browsers other than Safari don't support pushState
         // title attribute. We can achieve the same thing by setting it in JS.
-        document.title = "Title";
       }
     } catch (e) {
       console.error(e);
@@ -113,10 +117,9 @@ export const ListPageTemplate = ({initialData, genre, languages, year, size = 30
   }
 
 
-  const handleOnFilter = (data: FilterData) => {
+  const handleOnFilter = (data: FilterData) => { // Когда мы нажимаем на кнопку filter срабатывает callback и мы меняем в стейте параметры
     setSearchParams(data);
   }
-
 
   return (
     <div className='pt-20 pb-12 bg-black-2 w-full'>
@@ -134,7 +137,8 @@ export const ListPageTemplate = ({initialData, genre, languages, year, size = 30
                  placeholder="Search" ref={searchRef}/>
 
           <FilterBar searchParams={searchParams} onFilter={handleOnFilter}/>
-
+          {!isLoading && !filmList?.data?.movies?.length ?
+            <div className="mt-10">Ищем для вас контент, если это затянется, попробуйте поменять параметры...</div> : null}
           <div
             className='grid gap-y-8 gap-x-4 md:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 mt-8'>
 
@@ -152,24 +156,24 @@ export const ListPageTemplate = ({initialData, genre, languages, year, size = 30
             }
           </div>
 
-
-          {filmList ?
-            <>
-              <nav aria-label="Page navigation example" className='flex'>
-                <ul className="inline-flex -space-x-px text-sm mt-10 mx-[auto]">
-                  {page > 1 && <li>
+          {!isLoading && !filmList?.data?.movies?.length ? null : <>
+            {filmList ?
+              <>
+                <nav aria-label="Page navigation example" className='flex'>
+                  <ul className="inline-flex -space-x-px text-sm mt-10 mx-[auto]">
+                    {page > 1 && <li>
                       <span
                           onClick={handlePreviousPage}
                           className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                       >
                           Previous
                       </span>
-                  </li>
-                  }
+                    </li>
+                    }
 
-                  {/* Отображение номеров страниц */}
-                  {showingPagesPagination.map((num) => (
-                    <li key={num}>
+                    {/* Отображение номеров страниц */}
+                    {showingPagesPagination.map((num) => (
+                      <li key={num}>
                       <span
                         onClick={() => setPage(num)}
                         style={{}}
@@ -179,23 +183,25 @@ export const ListPageTemplate = ({initialData, genre, languages, year, size = 30
                       >
                         {num}
                       </span>
-                    </li>
-                  ))}
+                      </li>
+                    ))}
 
-                  {page < totalPages && totalPages > 1 &&
-                      <li>
+                    {page < totalPages && totalPages > 1 &&
+                        <li>
                           <span
                               onClick={handleNextPage}
                               className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                           >
                               Next
                           </span>
-                      </li>
-                  }
-                </ul>
-              </nav>
-            </>
-            : null}
+                        </li>
+                    }
+                  </ul>
+                </nav>
+              </>
+              : null}
+          </>
+          }
 
         </Wrapper>
       </section>

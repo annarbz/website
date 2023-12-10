@@ -8,7 +8,7 @@ export const gssp = async (ctx: GetServerSidePropsContext) => {
   const pageSize = ctx.query.size as string ?? "10";
 
   // Жанры используемые на index page
-  const homeGenres: { genre: Genre, text: string }[] = [
+  const homeGenres: { genre: Genre, text: string }[] = [ // Обьявляем список всех жанров на главной странице
     {
       genre: "",
       text: ""
@@ -31,7 +31,7 @@ export const gssp = async (ctx: GetServerSidePropsContext) => {
       text: "Хоррор"
     },
   ]
-
+  // через цикл получаем массив слайдеров, который будет использоваться на главной странице
   const homeFilmsContent: SliderFilmContent[] = await Promise.all(homeGenres.map(async genre => {
     const filmData = await filmListQuery(page, pageSize, genre.genre);
     return {
@@ -42,7 +42,7 @@ export const gssp = async (ctx: GetServerSidePropsContext) => {
   }))
 
 
-  return {
+  return { // Возвращаем props на /pages/index.tsx
     props: {
       homeFilmsContent,
     },

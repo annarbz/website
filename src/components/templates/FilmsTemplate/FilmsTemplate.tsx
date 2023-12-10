@@ -5,13 +5,12 @@ import {FilmRetrieveInfo, MovieList} from "@/lib/api/types";
 import {BsClockHistory} from "react-icons/bs";
 import {AiFillStar} from "react-icons/ai";
 import {TorrentModal} from "@/components/common/TorrentModal/TorrentModal";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {MdOutlineCloudDownload} from "react-icons/md";
 import {useFilmRetrieve} from "@/lib/hooks/useFilmRetrieve";
-import {router} from "next/client";
 import {useFilmList} from "@/lib/hooks/useFilmList";
 
-export const FilmsTemplate = ({data, id}: { data?: FilmRetrieveInfo , id:string}) => {
+export const FilmsTemplate = ({data, id}: { data?: FilmRetrieveInfo, id: string }) => {
   const [torrentModalIsOpen, setTorrentModalIsOpen] = useState(false);
   const [suggestionForView, setSuggestionForView] = useState<MovieList>();
 
@@ -23,15 +22,24 @@ export const FilmsTemplate = ({data, id}: { data?: FilmRetrieveInfo , id:string}
 
   // добавим фильмы из общей кучи, чтобы слайдер выглядел лучше
   const {filmList, isLoading, updateFilmList} = useFilmList(
-    {currentPage: "1", pageSize: "6"}
+    {currentPage: "1", pageSize: "6", pageRequest: "films"}
   );
 
   const {movie, suggestions} = filmRetrieve ? filmRetrieve : {movie: undefined, suggestions: undefined};
   const {cast} = movie ? movie : {cast: undefined};
 
+  const updatePageData = useCallback(() => {
+      if (!isLoading) {
+        updateFilmRetrieve();
+        updateFilmList();
+      }
+    },
+    [])
   useEffect(() => {
-    updateFilmRetrieve();
+    updatePageData();
+  }, [updatePageData]);
 
+  useEffect(() => {
     const arr1 = suggestions?.movies ?? [];
     const arr2 = filmList?.data?.movies ?? [];
     const sug = {
@@ -43,9 +51,7 @@ export const FilmsTemplate = ({data, id}: { data?: FilmRetrieveInfo , id:string}
     }
 
     setSuggestionForView(sug)
-  }, [])
-
-  console.log(movie, suggestions);
+  }, [suggestions, filmList])
   return (<div className='detail-page w-full'>
     {
       movie && <div className="detail" style={{backgroundImage: `url(${movie.background_image_original})`}}>
@@ -95,8 +101,9 @@ export const FilmsTemplate = ({data, id}: { data?: FilmRetrieveInfo , id:string}
                       {cast && cast.map((cast, index) => {
                         return (
                           <div key={cast.imdb_code} className='flex items-center gap-4'>
-                            {cast.url_small_image && <img className='w-10 h-10 rounded-full object-cover' src={cast.url_small_image}
-                                 alt={cast.name}/> }
+                            {cast.url_small_image &&
+                                <img className='w-10 h-10 rounded-full object-cover' src={cast.url_small_image}
+                                     alt={cast.name}/>}
                             <span
                               className='text-sm opacity-70 text-white'>{cast.name} {cast.character_name && <>- {cast.character_name}</>}</span>
                           </div>

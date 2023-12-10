@@ -4,6 +4,7 @@ import {gssp} from "@/services/indexPage/gssp";
 import {TIndexPageProps} from "@/services/indexPage/types";
 import {Home} from "@/components/templates/Home/Home";
 
+// Получаем пропсы переданные с gssp
 const Page: NextPage<TIndexPageProps> = (props) => {
   const {homeFilmsContent} = props;
   return (
